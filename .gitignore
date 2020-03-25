@@ -1,3 +1,5 @@
+# User defined
+/config/*
 
 # Created by https://www.gitignore.io/api/git,laravel,composer,phpstorm,visualstudio,visualstudiocode
 # Edit at https://www.gitignore.io/?templates=git,laravel,composer,phpstorm,visualstudio,visualstudiocode
