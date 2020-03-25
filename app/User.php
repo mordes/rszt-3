@@ -5,9 +5,6 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Seeder;
-use Illuminate\Database\Eloquent\Model;
-use App\User;
 
 class User extends Authenticatable
 {
@@ -19,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'username', 'email', 'password',
     ];
 
     /**
@@ -39,4 +36,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function sales(){
+        return $this->hasMany(Sales::class)->orderBy('created_at', 'DESC');
+    }
+
+    public function profile(){
+        return $this->hasOne(Profile::class);
+    }
 }
