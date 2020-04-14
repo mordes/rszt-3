@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Events\FormSubmitted;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,9 +18,19 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/uploadfile', 'UploadfileController@index');
-Route::post('/uploadfile', 'UploadfileController@upload');
-Route::get('/main', 'MainController@index');
-Route::post('/main/checklogin', 'MainController@checklogin');
-Route::get('main/successlogin', 'MainController@successlogin');
-Route::get('main/logout', 'MainController@logout');
+Auth::routes();
+
+
+Route::patch('/b/place/{sales}', 'PlaceBidController@update');
+
+Route::get('/b/{sales}', 'BidController@show');
+Route::post('/b/{sales}', 'PlaceBidController@sendMessage');
+
+Route::get('/s/create', 'BidController@create');
+Route::post('/s', 'BidController@store');
+
+Route::get('/profile/{user}', 'ProfilesController@index')->name('profile.show');
+Route::get('/profile/{user}/edit', 'ProfilesController@edit')->name('profile.edit');
+Route::patch('/profile/{user}', 'ProfilesController@update')->name('profile.update');
+
+Route::get('/', 'HomeController@index')->name('home.index');;
