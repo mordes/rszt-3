@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Events\FormSubmitted;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,8 +20,17 @@ Route::get('/', function () {
 
 Auth::routes();
 
+
+Route::patch('/b/place/{sales}', 'PlaceBidController@update');
+
+Route::get('/b/{sales}', 'BidController@show');
+Route::post('/b/{sales}', 'PlaceBidController@sendMessage');
+
 Route::get('/s/create', 'BidController@create');
 Route::post('/s', 'BidController@store');
 
 Route::get('/profile/{user}', 'ProfilesController@index')->name('profile.show');
-Route::get('/redirect', 'RedirectController@index')->name('redirect');;
+Route::get('/profile/{user}/edit', 'ProfilesController@edit')->name('profile.edit');
+Route::patch('/profile/{user}', 'ProfilesController@update')->name('profile.update');
+
+Route::get('/', 'HomeController@index')->name('home.index');;

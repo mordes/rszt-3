@@ -17,6 +17,7 @@ class CreateSalesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('buyer_id')->nullable();
+            $table->dateTime('endOfAuction')->nullable();
             $table->unsignedBigInteger('price');
             $table->text('title');
             $table->text('description');

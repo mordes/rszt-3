@@ -70,6 +70,24 @@
                     </div>
 
                     <div class="row">
+                        <label for="endOfAuction" class="col-form-label text-md-right">{{ __('End of auction') }}</label>
+
+                        <input id="endOfAuction"
+                               type="datetime-local"
+                               class="form-control-file
+                           @error('endOfAuction') is-invalid @enderror"
+                               name="endOfAuction"
+                               value="{{ old('endOfAuction') }}"
+                               autocomplete="endOfAuction" autofocus>
+
+                        @error('endOfAuction')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                    </div>
+
+                    <div class="row">
                         <label for="image" class="col-form-label text-md-right">{{ __('Product Image') }}</label>
 
                         <input id="image"

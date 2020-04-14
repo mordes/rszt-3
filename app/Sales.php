@@ -11,4 +11,13 @@ class Sales extends Model
     public function sale(){
         return $this->belongsTo(User::class);
     }
+
+    public function chat(){
+        return $this->hasMany(Chat::class);
+    }
+
+    public function ownerUser(){
+        return User::find($this->user_id);
+    }
+
 }
