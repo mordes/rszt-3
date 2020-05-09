@@ -18,6 +18,8 @@ class ProfilesController extends Controller
 
         $expired = array();
         $live = array();
+        $expiredSelf = array();
+        $liveSelf = array();
 
         foreach ($bids as $bid){
             $sale = Sales::find($bid->sales_id);
@@ -33,10 +35,23 @@ class ProfilesController extends Controller
             }
         }
 
+        $qcondition = ['user_id' => $user->id];
+        foreach (Sales::where($qcondition)->get() as $sale){
+            $saved = new Carbon($sale->endOfAuction);
+            if (!($saved->gt(now()))){
+                array_push($expiredSelf, $sale);
+            }
+            else{
+                array_push($liveSelf, $sale);
+            }
+        }
+
         $data = array();
         array_push($data, $user);
         array_push($data, $expired);
         array_push($data, $live);
+        array_push($data, $expiredSelf);
+        array_push($data, $liveSelf);
 
         return view('profiles.index', compact('data'));
     }
