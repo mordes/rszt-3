@@ -1,5 +1,20 @@
 @extends('layouts.app')
 
+<script>
+    window.onload = function () {
+        calc();
+    }
+
+    function calc(){
+        if(document.getElementById('newsletter').checked){
+            document.getElementById("newsletter2").value = 1;
+        }
+        else{
+            document.getElementById("newsletter2").value = 0;
+        }
+    }
+</script>
+
 @section('content')
 <div class="container">
     <form action="/profile/{{$user->id}}" enctype="multipart/form-data" method="post">
@@ -28,7 +43,7 @@
                         </span>
                     @enderror
                 </div>
-                <div class="form-group row">
+                <div class="row d-flex">
                     <label for="url" class="col-form-label text-md-right">{{ __('Url') }}</label>
 
                     <input id="url"
@@ -44,6 +59,33 @@
                             <strong>{{ $message }}</strong>
                         </span>
                     @enderror
+                </div>
+                <div class="row">
+                    <label for="newsletter" class="col-form-label text-md-right">{{ __('Subscribe Newsletter') }}</label>
+
+                    <input id="newsletter"
+                           type="checkbox"
+                           onclick="calc();"
+                           class="form-control
+                           @error('newsletter') is-invalid @enderror"
+                           name="newsletter"
+                           value="{{ old('newsletter') ?? ""}}"
+                           @if($user->profile->newsletter == 1)
+                               CHECKED
+                           @endif
+                           autocomplete="newsletter" autofocus>
+
+                    @error('newsletter')
+                    <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+                <div>
+                    <input id="newsletter2"
+                           type="text"
+                           name="newsletter2"
+                           hidden>
                 </div>
                 <div class="row">
                     <label for="image" class="col-form-label text-md-right">{{ __('Profile Image') }}</label>

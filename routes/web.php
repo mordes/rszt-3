@@ -20,6 +20,12 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get('/testblade', function () {
+    return view('emails.sendNewsletter');
+});
+
+Route::get('/sendall', 'NewsletterController@index');
+Route::post('/sendall/send', 'NewsletterController@send');
 
 Route::patch('/b/place/{sales}', 'PlaceBidController@update');
 
