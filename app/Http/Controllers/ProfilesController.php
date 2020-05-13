@@ -8,6 +8,7 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
+use Symfony\Component\Console\Input\Input;
 
 class ProfilesController extends Controller
 {
@@ -18,6 +19,8 @@ class ProfilesController extends Controller
 
         $expired = array();
         $live = array();
+        $expiredSelf = array();
+        $liveSelf = array();
 
         foreach ($bids as $bid){
             $sale = Sales::find($bid->sales_id);
@@ -33,10 +36,23 @@ class ProfilesController extends Controller
             }
         }
 
+        $qcondition = ['user_id' => $user->id];
+        foreach (Sales::where($qcondition)->get() as $sale){
+            $saved = new Carbon($sale->endOfAuction);
+            if (!($saved->gt(now()))){
+                array_push($expiredSelf, $sale);
+            }
+            else{
+                array_push($liveSelf, $sale);
+            }
+        }
+
         $data = array();
         array_push($data, $user);
         array_push($data, $expired);
         array_push($data, $live);
+        array_push($data, $expiredSelf);
+        array_push($data, $liveSelf);
 
         return view('profiles.index', compact('data'));
     }
@@ -57,18 +73,28 @@ class ProfilesController extends Controller
             'image' => '',
         ]);
 
+        $data2 = request()->input('newsletter2');
+
         if (request('image'))
         {
             $imagepath = request('image')->store('uploads', 'public');
 
             $image = Image::make(public_path("storage/{$imagepath}"))->fit(1000,1000);
             $image->save();
+
+            auth()->user()->profile->update(array_merge(
+                $data,
+                ['newsletter' => $data2],
+                ['image' => $imagepath]
+            ));
+        }
+        else{
+            auth()->user()->profile->update(array_merge(
+                $data,
+                ['newsletter' => $data2]
+            ));
         }
 
-        auth()->user()->profile->update(array_merge(
-            $data,
-            ['image' => $imagepath]
-        ));
 
         return redirect("profile/{$user->id}");
     }

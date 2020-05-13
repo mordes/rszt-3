@@ -59,6 +59,11 @@
                                     <a class="dropdown-item" href="/profile/{{ auth()->user()->id }}">
                                         {{ __('Profile') }}
                                     </a>
+                                    @if(auth()->user()->admin)
+                                    <a class="dropdown-item" href="/sendall">
+                                        {{ __('Send Newsletter') }}
+                                    </a>
+                                    @endif
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
